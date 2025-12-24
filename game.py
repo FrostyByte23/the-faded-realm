@@ -1,16 +1,25 @@
 from player import Player
+from world import World
 
 class Game:
     def __init__(self):
         self.player = Player()
+        self.world = World()
         self.flags = {}
         self.variables = {}
-        self.current_location = (0, 0)  # Example position tracking
 
     def move_player(self, dx, dy):
-        """Move the player by (dx, dy) in the game world"""
-        self.current_location = (self.current_location[0] + dx, self.current_location[1] + dy)
-        # Add any movement-related logic here
+        """
+        Move the player in the game world
+        
+        Args:
+            dx (int): Change in x-coordinate
+            dy (int): Change in y-coordinate
+            
+        Returns:
+            tuple: The new position (x, y)
+        """
+        return self.world.move_player(dx, dy)
 
     def get_player_stats(self):
         """Return player stats as a dictionary for the frontend"""
@@ -22,5 +31,6 @@ class Game:
             'level': self.player.level,
             'xp': self.player.xp,
             'gold': self.player.gold,
-            'inventory': [str(item) for item in self.player.inventory]
+            'inventory': [str(item) for item in self.player.inventory],
+            'position': self.world.current_location
         }
