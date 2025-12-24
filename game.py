@@ -1,32 +1,26 @@
 from player import Player
-player = Player()
+
 class Game:
     def __init__(self):
+        self.player = Player()
         self.flags = {}
         self.variables = {}
+        self.current_location = (0, 0)  # Example position tracking
 
-    def dialogue(self, speaker, lines):
-        if isinstance(lines, str):
-            lines = [lines]
-        print(f"{speaker}:")
-        for line in lines:
-            print(f"    {line}")
-        input("    Press Enter to continue...")
+    def move_player(self, dx, dy):
+        """Move the player by (dx, dy) in the game world"""
+        self.current_location = (self.current_location[0] + dx, self.current_location[1] + dy)
+        # Add any movement-related logic here
 
-    def input_dialogue(self, line, choices):
-        if isinstance(choices, str):
-            choices = [choices]
-
-        for i, value in enumerate(choices):
-            print(f"    {i+1}: {value}")
-
-        while True:
-            try:
-                num = int(input(f"    {line}: "))
-                if 1 <= num <= len(choices):
-                    return str(num)
-                else:
-                    print("    Please enter a valid choice.")
-                    pass
-            except ValueError:
-                print("    Please enter a valid number.")
+    def get_player_stats(self):
+        """Return player stats as a dictionary for the frontend"""
+        return {
+            'name': self.player.name,
+            'race': self.player.race.name if hasattr(self.player, 'race') else 'Unknown',
+            'health': self.player.health,
+            'max_health': self.player.max_health,
+            'level': self.player.level,
+            'xp': self.player.xp,
+            'gold': self.player.gold,
+            'inventory': [str(item) for item in self.player.inventory]
+        }
